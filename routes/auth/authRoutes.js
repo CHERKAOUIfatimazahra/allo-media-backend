@@ -11,4 +11,7 @@ router.get("/verify-email", authController.verifyEmail);
 // Route pour la connexion d'un utilisateur
 router.post("/login", authController.login);
 
+// Route pour la verification d'un OTP
+router.post("/verify-otp", authController.verifyOTP);
+
 module.exports = router;

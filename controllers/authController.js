@@ -118,3 +118,33 @@ exports.login = async (req, res) => {
   }
 };
 
+// Route pour la verification d'un OTP
+exports.verifyOTP = async (req, res) => {
+  const { email, otp } = req.body; 
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Vérifiez si l'OTP est valide et s'il n'a pas expiré
+    if (user.otp === otp && user.otpExpires > Date.now()) {
+      user.otp = undefined; 
+      user.otpExpires = undefined; 
+      await user.save();
+
+      const token = jwt.sign(
+        { id: user._id, role: user.role },
+        process.env.JWT_SECRET,
+        { expiresIn: "1h" }
+      );
+
+      res.json({ message: "OTP verified successfully", token });
+    } else {
+      res.status(400).json({ message: "Invalid or expired OTP" });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
