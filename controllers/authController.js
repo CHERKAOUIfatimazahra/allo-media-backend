@@ -197,3 +197,27 @@ exports.forgetPassword = async (req, res) => {
 
   res.json({ message: "Email sent for password reset" });
 };
+
+// Route pour réinitialiser le mot de passe
+exports.resetPassword = async (req, res) => {
+  const { token, newPassword } = req.body;
+
+  // Vérification du token
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.id);
+
+    if (!user || user.verificationToken !== token) {
+      return res.status(400).json({ message: "Invalid or expired token" });
+    }
+
+    // Mettre à jour le mot de passe
+    user.password = await bcrypt.hash(newPassword, 10);
+    user.verificationToken = undefined;
+    await user.save();
+
+    res.json({ message: "Password reset successfully" });
+  } catch (error) {
+    return res.status(400).json({ message: "Invalid token" });
+  }
+};

@@ -20,5 +20,10 @@ router.post("/resend-otp", authController.resendOTP);
 // Route pour demander la réinitialisation du mot de passe (oubli de mot de passe)
 router.post("/forgot-password", authController.forgetPassword);
 
+// Route pour réinitialiser le mot de passe à l'aide d'un token
+router.post("/reset-password", authController.resetPassword);
+
+// Route pour la déconnexion d'un utilisateur
+router.post("/logout", verifyToken, authController.logout);
 
 module.exports = router;
