@@ -69,3 +69,52 @@ exports.verifyEmail = async (req, res) => {
     return res.redirect("http://localhost:5174/error?message=invalid-token");
   }
 };
+
+// Modifiez la fonction login pour inclure la logique de l'OTP
+exports.login = async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await User.findOne({ email });
+  if (!user) return res.status(404).json({ message: "User not found" });
+
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) return res.status(401).json({ message: "Invalid credentials" });
+
+  if (!user.isVerified) {
+    return res
+      .status(403)
+      .json({ message: "Please verify your email before logging in." });
+  }
+
+  // Logic for OTP sending only if required
+  if (!user.otp || user.otpExpires < Date.now()) {
+    const lastOTPSentAt = user.lastOTPSentAt;
+    const oneWeekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000; 
+    if (lastOTPSentAt && lastOTPSentAt > oneWeekAgo) {
+      const token = jwt.sign(
+        { id: user._id, role: user.role },
+        process.env.JWT_SECRET,
+        { expiresIn: "1h" }
+      );
+      res.json({ token });
+    } else {
+      // Generate a new OTP and send it to the user
+      const otp = generateOTP();
+      user.otp = otp;
+      user.otpExpires = Date.now() + 3 * 60 * 1000; 
+      user.lastOTPSentAt = Date.now(); 
+      await user.save();
+
+      sendEmail(user.email, "Your OTP", `Your OTP is ${otp}`);
+      res.json({ message: "OTP sent to email" });
+    }
+  } else {
+    const token = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+    res.json({ token });
+  }
+};
+
