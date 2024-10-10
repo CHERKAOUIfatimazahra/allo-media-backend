@@ -49,3 +49,23 @@ exports.register = async (req, res) => {
   }
 };
 
+// Vérification de l'email
+exports.verifyEmail = async (req, res) => {
+  const { token } = req.query;
+  // Vérifiez le token de vérification avec JWT
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded.id); 
+
+    if (!user) return res.status(400).json({ message: "Invalid token" });
+
+    user.isVerified = true; 
+    user.verificationToken = undefined; 
+    await user.save();
+
+    // Rediriger vers une page spécifique dans le frontend
+    return res.redirect("http://localhost:5174/login?verified=true");
+  } catch (error) {
+    return res.redirect("http://localhost:5174/error?message=invalid-token");
+  }
+};
