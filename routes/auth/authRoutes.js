@@ -17,4 +17,8 @@ router.post("/verify-otp", authController.verifyOTP);
 // Route pour le renvoit de otp
 router.post("/resend-otp", authController.resendOTP);
 
+// Route pour demander la réinitialisation du mot de passe (oubli de mot de passe)
+router.post("/forgot-password", authController.forgetPassword);
+
+
 module.exports = router;

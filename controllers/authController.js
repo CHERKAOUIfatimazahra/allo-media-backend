@@ -171,3 +171,29 @@ exports.resendOTP = async (req, res) => {
     res.status(400).json({ message: "OTP already sent" });
   }
 };
+
+exports.forgetPassword = async (req, res) => {
+  const { email } = req.body;
+
+  const user = await User.findOne({ email });
+  if (!user) return res.status(404).json({ message: "User not found" });
+
+  // Génération du token de vérification
+  const verificationToken = jwt.sign(
+    { id: user._id }, 
+    process.env.JWT_SECRET, 
+    { expiresIn: "1h" } 
+  );
+
+  user.verificationToken = verificationToken; 
+  await user.save(); 
+
+  const resetLink = `http://localhost:5174/reset-password?token=${verificationToken}`;
+  sendEmail(
+    user.email,
+    "Réinitialisation de votre mot de passe",
+    `Cliquez sur ce lien pour réinitialiser votre mot de passe : ${resetLink}`
+  );
+
+  res.json({ message: "Email sent for password reset" });
+};
