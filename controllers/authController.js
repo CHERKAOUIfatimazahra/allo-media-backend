@@ -148,3 +148,26 @@ exports.verifyOTP = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+// Route pour le renvoi d'un OTP
+exports.resendOTP = async (req, res) => {
+  const { email } = req.body;
+
+  const user = await User.findOne({ email });
+  if (!user) {
+    return res.status(404).json({ message: "User not found" });
+  }
+
+  if (!user.otp || user.otpExpires < Date.now()) {
+    const otp = generateOTP();
+    user.otp = otp;
+    user.otpExpires = Date.now() + 3 * 60 * 1000; // 10 minutes
+    await user.save();
+
+    sendEmail(user.email, "Your OTP", `Your OTP is ${otp}`);
+
+    res.json({ message: "OTP sent to email" });
+  } else {
+    res.status(400).json({ message: "OTP already sent" });
+  }
+};

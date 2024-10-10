@@ -14,4 +14,7 @@ router.post("/login", authController.login);
 // Route pour la verification d'un OTP
 router.post("/verify-otp", authController.verifyOTP);
 
+// Route pour le renvoit de otp
+router.post("/resend-otp", authController.resendOTP);
+
 module.exports = router;
