@@ -39,18 +39,18 @@ AlloMedia est une application de livraison à domicile. Ce projet constitue le b
 3. **Configurer les variables d'environnement** :
    Créez un fichier .env à la racine du projet et ajoutez-y les variables suivantes :
    ```bash
-MONGO_URI=mongodb:votre_uri_mongodb
-PORT=5000
-JWT_SECRET=votre_secret_jwt
-JWT_EXPIRES_IN=1h
-EMAIL=votre_service_email
-EMAIL_PASSWORD=mot_de_passe
-BASE_URL=http://localhost:5000
-VITE_APP_BASE_URL=http://localhost:5000/auth
+   MONGO_URI=mongodb:votre_uri_mongodb
+   PORT=5000
+   JWT_SECRET=votre_secret_jwt
+   JWT_EXPIRES_IN=1h
+   EMAIL=votre_service_email
+   EMAIL_PASSWORD=mot_de_passe
+   BASE_URL=http://localhost:5000
+   VITE_APP_BASE_URL=http://localhost:5000/auth
 
 4. **Démarrer l'application** :
    ```bash
-npm start
+   npm start
 
 ## Configurer les variables d'environnement 
  Ce projet utilise les variables d'environnement pour des configurations sensibles comme l'URI MongoDB et le secret JWT. Assurez-vous de définir les valeurs dans un fichier .env comme mentionné ci-dessus.
