@@ -54,12 +54,12 @@ AlloMedia est une application de livraison à domicile. Ce projet constitue le b
 
 ## Configurer les variables d'environnement 
  Ce projet utilise les variables d'environnement pour des configurations sensibles comme l'URI MongoDB et le secret JWT. Assurez-vous de définir les valeurs dans un fichier .env comme mentionné ci-dessus.
-  1. **Utilisation** :
-**Pour démarrer l'application :**
+### Utilisation :
+#### Pour démarrer l'application :
     ```bash
     npm start
 
-**Pour exécuter les tests :**
+#### Pour exécuter les tests :
     ```bash
     npm test
 
