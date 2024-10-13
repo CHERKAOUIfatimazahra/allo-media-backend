@@ -7,7 +7,7 @@
 3. [Installation](#installation)
 4. [Configuration de l'environnement](#configuration-de-lenvironnement)
 5. [Utilisation](#Utilisation)
-6. [API Endpoints](#API Endpoints)
+6. [API Endpoints](#API-Endpoints)
 7. [Tests](#Tests)
 
 ## Description du projet
