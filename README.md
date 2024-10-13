@@ -6,9 +6,9 @@
 2. [Technologies utilisées](#technologies-utilisées)
 3. [Installation](#installation)
 4. [Configuration de l'environnement](#configuration-de-lenvironnement)
-5. [Utilisation](#utilisation)
-6. [API Endpoints](#api-endpoints)
-7. [Tests](#tests)
+5. [Utilisation](#Utilisation)
+6. [API Endpoints](#API Endpoints)
+7. [Tests](#Tests)
 
 ## Description du projet
 
